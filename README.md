@@ -1,1 +1,1 @@
-# diffusion-optimal-transport
+# Optimal Transport with Diffusion Models
