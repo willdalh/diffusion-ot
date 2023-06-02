@@ -1,0 +1,40 @@
+{
+    "log_name": "celebahq256_cont2",
+    "dataset": "celebahq256",
+    "epochs": 30000,
+    "save_interval": 20,
+    "batch_size": 64,
+    "lr": 2e-05,
+    "ema_decay": 0.999,
+    "n_T": 4000,
+    "beta1": 0.00085,
+    "beta2": 0.012,
+    "scheduler": "scaled_linear",
+    "model_type": "unet",
+    "unet_start_channels": 32,
+    "unet_down_factors": [
+        2,
+        4,
+        8,
+        16,
+        32,
+        64
+    ],
+    "unet_bot_factors": [
+        64,
+        64,
+        32
+    ],
+    "unet_use_attention": false,
+    "pretrained_dirname": "celebahq256_cont1",
+    "pretrained_model": null,
+    "load_only_models": null,
+    "debug": false,
+    "debug_slice": null,
+    "log_dir": "logs/training/celebahq256_cont2",
+    "data_shape": [
+        3,
+        256,
+        256
+    ]
+}
