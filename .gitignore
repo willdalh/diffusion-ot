@@ -1,2 +1,5 @@
 logs/**/models
 logs/**/samples
+
+mover.py
+renamer.py
