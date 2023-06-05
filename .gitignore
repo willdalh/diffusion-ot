@@ -1,6 +1,8 @@
 logs/**/models
 logs/**/samples
 
+logs/**/train_test
+
 mover.py
 renamer.py
 diffusion-ot.zip
