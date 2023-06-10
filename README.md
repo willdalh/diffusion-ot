@@ -2,7 +2,11 @@
 
 ## Datasets
 
-Models used in experiments on high-dimensional data requires the image datasets. The thesis specifies where they are obtained from.  
+Models used in experiments on high-dimensional data requires the image datasets. The thesis specifies where they are obtained from.
+
+CelebA-HQ-256 must have the following structure: ``src/data/celebahq256/**/<images>``.
+
+AFHQ must have the following structure:``src/data/afhq/**/<images>``.
 
 ## Training
 
@@ -42,10 +46,10 @@ options:
                         The name of the directory to load pretrained models from
   --load_only_models LOAD_ONLY_MODELS
                         Name of directory for model states to load, and ignore other arguments from the pretrained session
-  --debug DEBUG         Whether to run in debug mode
+  --debug DEBUG         Whether to run in debug mode. Activates tqdm
   --debug_slice DEBUG_SLICE
                         The slice to use on the dataset for debugging
-  --mus MUS [MUS ...]   The means of the Gaussians. Write '--mus X' for a univar single. Write '--mus X Y' for a univar double. Write '--mus 'X1 Y1' 'X2 Y2'' for a bivar double
+  --mus MUS [MUS ...]   The means of the Gaussians. Write '--mus 'X'' for a univar single. Write '--mus X Y' for a univar double. Write '--mus 'X1 Y1' 'X2 Y2'' for a bivar double
   --sigmas SIGMAS [SIGMAS ...]
                         The stds/covariance of the Gaussians. Write '--sigmas X' for univar single. Write '--sigmas X Y' for univar double Write. For bivariate single, write for example '--sigmas 1,0:0,1'. For bivariate double, write for example '--sigmas 1,0:0,1 1,0:0,1'
 ```
