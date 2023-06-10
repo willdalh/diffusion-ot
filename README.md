@@ -1,5 +1,10 @@
 # Optimal Transport with Diffusion Models
 
+<div style="display: flex;">
+  <img src="resources/partial_intensity_modification1.gif" alt="First GIF" style="width: 20%; height: auto;">
+  <img src="resources/partial_intensity_modification2.gif" alt="Second GIF" style="width: 20%; height: auto;">
+</div>
+
 ## Datasets
 
 Models used in experiments on high-dimensional data requires the image datasets. The thesis specifies where they are obtained from.
