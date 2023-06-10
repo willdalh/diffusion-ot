@@ -149,11 +149,11 @@ if __name__ == "__main__":
     parser.add_argument("--load_only_models", default=None, help="Name of directory for model states to load, and ignore other arguments from the pretrained session")
 
     # * Debugging specifics
-    parser.add_argument("--debug", default=False, help="Whether to run in debug mode", type=str_to_bool)
+    parser.add_argument("--debug", default=False, help="Whether to run in debug mode. Activates tqdm", type=str_to_bool)
     parser.add_argument("--debug_slice", default=None, help="The slice to use on the dataset for debugging", type=int)
 
     # * Used in the case of the dataset being a mixture of Gaussians (only supports 1D and 2D specifications)
-    parser.add_argument("--mus", nargs="+", default=None, type=lambda x: [float(i) for i in x.split()], help="The means of the Gaussians. Write '--mus X' for a univar single. Write '--mus X Y' for a univar double. Write '--mus 'X1 Y1' 'X2 Y2'' for a bivar double")
+    parser.add_argument("--mus", nargs="+", default=None, type=lambda x: [float(i) for i in x.split()], help="The means of the Gaussians. Write '--mus 'X'' for a univar single. Write '--mus X Y' for a univar double. Write '--mus 'X1 Y1' 'X2 Y2'' for a bivar double")
     # Bear with me here 
     parser.add_argument("--sigmas", nargs="+", default=None, type=lambda x: [[float(j) for j in i.split(',')] for i in x.split(':')], help="The stds/covariance of the Gaussians. Write '--sigmas X' for univar single. Write '--sigmas X Y' for univar double Write. For bivariate single, write for example '--sigmas 1,0:0,1'. For bivariate double, write for example '--sigmas 1,0:0,1 1,0:0,1'") 
 
