@@ -108,7 +108,7 @@ class Denoiser(nn.Module, ABC):
     @abstractmethod
     def sample_step(self, x, t) -> torch.Tensor:
         """
-        Sample from the model at a particular time step. Ov
+        Sample from the model at a particular time step. 
         Args:
             x (torch.Tensor): x_t 
             t (int): Time step

@@ -3,6 +3,10 @@ logs/**/samples
 
 logs/**/train_test
 
+src/data/*
+!src/data/DATASETS_GO_HERE
+
 mover.py
 renamer.py
 diffusion-ot.zip
+code.zip

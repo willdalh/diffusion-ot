@@ -32,7 +32,7 @@ def run_training(args: TrainingArgsType):
     args.log_dir = "logs/training/" + args.log_name # * Additional arg
 
     # ! PROTECTED DIRS
-    protected_dirs = ["color_first_try", "first_try"]
+    protected_dirs = ["Celeb256", "Celeb64", "AFHQ256", "AFHQ256Exp1", "AFHQ256Exp2", "Low1DMix", "Low2DSymMix", "Low2DASymMix", "Low2DUnimodal", "Low2DBimodal", "Low2DSCurve"]
     if args.log_name in protected_dirs:
         raise Exception(f"Log name {args.log_name} is protected, please choose another one")
 
@@ -79,7 +79,7 @@ def run_training(args: TrainingArgsType):
 
 
     if args.model_type == "unet":
-        assert len(data_shape) == 3, "UNet only supports 3D data"
+        assert len(data_shape) == 3, "UNet only supports 3D data (C, H, W)"
         c, h, w = data_shape
         net = UNet(in_channels=c, out_channels=c, data_shape=data_shape, time_dim=256, unet_start_channels=args.unet_start_channels, unet_down_factors=args.unet_down_factors, unet_bot_factors=args.unet_bot_factors, unet_use_attention=args.unet_use_attention)
 
@@ -132,20 +132,19 @@ if __name__ == "__main__":
     parser.add_argument("--n_T", default=1000, help="The number of diffusion steps", type=int)
     parser.add_argument("--beta1", default=1e-4, help="Beta1 for diffusion", type=float)
     parser.add_argument("--beta2", default=0.02, help="Beta2 for diffusion", type=float)
-    parser.add_argument("--scheduler", default="linear", help="The scheduler to use", type=str)
+    parser.add_argument("--scheduler", default="linear", help="The scheduler to use", type=str, choices=["linear", "cosine", "scaled_linear"])
 
     # * Model
-    parser.add_argument("--model_type", default="unet", help="The model to use", type=str)
+    parser.add_argument("--model_type", default="unet", help="The model architecture to use", type=str, choices=["unet", "single_dim_net"])
 
     # * UNet specifics
     parser.add_argument("--unet_start_channels", default=64, help="The number of channels in the first layer of the UNet", type=int)
-    parser.add_argument("--unet_down_factors", nargs="+", default=[2, 4, 4], help="The multiplication of channels when downsampling", type=int)
-    parser.add_argument("--unet_bot_factors", nargs="+", default=[8, 8, 4], help="The multiplication of channels during the bottleneck layers", type=int)
-    parser.add_argument("--unet_use_attention", default=False, help="Whether to use attention in the network", type=str_to_bool)
+    parser.add_argument("--unet_down_factors", nargs="+", default=[2, 4, 4], help="The multiplication of channels when downsampling in the UNet", type=int)
+    parser.add_argument("--unet_bot_factors", nargs="+", default=[8, 8, 4], help="The multiplication of channels during the bottleneck layers in the UNet", type=int)
+    parser.add_argument("--unet_use_attention", default=False, help="Not supported: Whether to use attention in the UNet", type=str_to_bool)
 
     # * Pretrained specifics
     parser.add_argument("--pretrained_dirname", default=None, help="The name of the directory to load pretrained models from", type=str)
-    # parser.add_argument("--pretrained_model", default=None, help="The name of the model to load from pretrained_dir", type=str)
     
     parser.add_argument("--load_only_models", default=None, help="Name of directory for model states to load, and ignore other arguments from the pretrained session")
 
@@ -154,18 +153,12 @@ if __name__ == "__main__":
     parser.add_argument("--debug_slice", default=None, help="The slice to use on the dataset for debugging", type=int)
 
     # * Used in the case of the dataset being a mixture of Gaussians (only supports 1D and 2D specifications)
-    parser.add_argument("--mus", nargs="+", default=None, type=lambda x: [float(i) for i in x.split()], help="The means of the Gaussians. Write '--mus X' for a univar single. Write --mus X Y for a univar double. Write '--mus 'X1 Y1' 'X2 Y2' 'X3Y3' for a bivar triple")
-    
-    # def handle(x):
-    #     # print(x.split(":"))
-    #     print([[int(j) for j in i.split(',')] for i in x.split(':')])
-
-    #     # return 1
-    #     return  
-
+    parser.add_argument("--mus", nargs="+", default=None, type=lambda x: [float(i) for i in x.split()], help="The means of the Gaussians. Write '--mus X' for a univar single. Write '--mus X Y' for a univar double. Write '--mus 'X1 Y1' 'X2 Y2'' for a bivar double")
     # Bear with me here 
-    parser.add_argument("--sigmas", nargs="+", default=None, type=lambda x: [[float(j) for j in i.split(',')] for i in x.split(':')], help="hello") 
+    parser.add_argument("--sigmas", nargs="+", default=None, type=lambda x: [[float(j) for j in i.split(',')] for i in x.split(':')], help="The stds/covariance of the Gaussians. Write '--sigmas X' for univar single. Write '--sigmas X Y' for univar double Write. For bivariate single, write for example '--sigmas 1,0:0,1'. For bivariate double, write for example '--sigmas 1,0:0,1 1,0:0,1'") 
 
+    interface = parser.format_help()
+    print(interface)
     args = parser.parse_args()
     print("Running with args: ", args)
     
